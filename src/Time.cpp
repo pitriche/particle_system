@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 21:03:42 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/22 13:43:12 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/23 16:55:37 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 // no more than MAX_SAMPLE_AVERAGE samples
 Time::Time(void) : delta(0), _min_delta(0), _old_ts(timestamp()),
-	_sample_average(10)
+	_sample_average(10), _elapsed_frame(0)
 {
 	for (int i = 0; i < MAX_SAMPLE_AVERAGE; i++)
 		this->_delta_sample[i] = 0;
@@ -38,7 +38,7 @@ std::string	Time::fps_average(void)
 	for (unsigned i = 0; i < this->_sample_average; i++)
 		tot += this->_delta_sample[i];
 	tot /= this->_sample_average;
-	return ("Average: " + std::to_string(1000000000.0 / tot) + "\tHz");
+	return ("Average: " + std::to_string(1000000000.0 / tot) + " Hz");
 }
 
 void		Time::set_average_sample(unsigned nb)
@@ -92,7 +92,10 @@ void		Time::update(void)
 	this->_delta_sample[this->_sample_current++] = this->delta;
 	if (this->_sample_current >= this->_sample_average)
 		this->_sample_current = 0;
+	this->_elapsed_frame++;
 }
+
+unsigned long	Time::elapsed_frame(void) { return (this->_elapsed_frame); }
 
 unsigned long	Time::timestamp(void)
 {

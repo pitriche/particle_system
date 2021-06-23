@@ -6,7 +6,7 @@
 #    By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/07 14:21:44 by pitriche          #+#    #+#              #
-#    Updated: 2021/06/22 14:01:22 by pitriche         ###   ########.fr        #
+#    Updated: 2021/06/23 18:41:31 by pitriche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,11 +24,13 @@ RESET	= \033[0m
 NAME = particle_system
 
 CLASSES=	\
-All				\
-Display			\
-Event			\
-Time			\
-Utils			\
+All		\
+Display	\
+Event	\
+Time	\
+Utils	\
+OpenGL	\
+OpenCL	\
 
 CLASSES_HEADERS= $(addsuffix .hpp, $(CLASSES))
 CLASSES_SRCS= $(addsuffix .cpp, $(CLASSES))
@@ -50,7 +52,8 @@ FLAGS = -Wall -Wextra -Wconversion -Wunused -std=c++11 $(FL_OPTI)
 CFLAGS = -c $(FLAGS)
 
 SDL_DIR = frameworks
-FRAMEWORKS = -F $(SDL_DIR) -framework SDL2 -Wl,-rpath $(SDL_DIR) -framework OpenGL
+FRAMEWORKS = -F $(SDL_DIR) -framework SDL2 -Wl,-rpath $(SDL_DIR) \
+-framework OpenGL -framework OpenCL
 
 CINCLUDE = -I include -I frameworks/SDL2.framework/headers \
 

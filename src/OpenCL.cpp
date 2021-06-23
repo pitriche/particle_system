@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Utils.hpp                                          :+:      :+:    :+:   */
+/*   OpenCL.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/09 11:13:45 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/23 10:48:27 by pitriche         ###   ########.fr       */
+/*   Created: 2021/02/09 11:14:54 by pitriche          #+#    #+#             */
+/*   Updated: 2021/06/23 18:38:44 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_HPP
-# define UTILS_HPP
+#include "OpenCL.hpp"
 
-# include <iostream>	/* std::string */
+OpenCL::OpenCL(void) { }
 
-namespace Utils
+
+void	OpenCL::init(void)
 {
-	void	error_quit(const std::string &str);
-	char	*read_file(const char *filename);
-}
+	/* fetch GPU */
+	clGetDeviceIDs(0, CL_DEVICE_TYPE_GPU, 1, &this->device, 0);
 
-#endif
+	/* create context and command queue */
+	this->context = clCreateContext(0, 1, &this->device, 0, 0, 0);
+	this->queue = clCreateCommandQueue(this->context, this->device, 0, 0);
+
+	/* compile kernels */
+	// todo
+}

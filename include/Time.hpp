@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 18:57:00 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/22 13:41:46 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/23 09:46:46 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ struct	Time
 
 		unsigned long	delta;
 
-		std::string	fps_average(void);
-		std::string	time_to_frame(void);
-		void		set_average_sample(unsigned nb);
-		void		set_fps(unsigned long fps);	/* fps cap, 0 for no cap */
-		void		update(void);
+		std::string		fps_average(void);
+		std::string		time_to_frame(void);
+		void			set_average_sample(unsigned nb);
+		void			set_fps(unsigned long fps);	/* fps cap, 0 for no cap */
+		void			update(void);
+
+		unsigned long	elapsed_frame(void);
 
 		static void	nsleep(unsigned long nsec);
 
@@ -45,6 +47,8 @@ struct	Time
 		unsigned long	_sample_average;
 		unsigned long	_sample_current;
 		unsigned long	_delta_sample[MAX_SAMPLE_AVERAGE];
+
+		unsigned long	_elapsed_frame;
 
 		static unsigned long	timestamp(void);
 
