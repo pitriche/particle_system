@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:14:54 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/23 18:41:08 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/24 11:08:56 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ void	OpenGL::_init_vao(void)
 
 void	OpenGL::_init_vbo(void)
 {
-	static float temporary_data[1000000*3]; ////////////////
-	for (unsigned i = 0; i < 3000000; i += 3)
+	static float temporary_data[4*3]; ////////////////
+	for (unsigned i = 0; i < 12; i += 3)
 	{
 		/* circle */
-		// float rad = (i / 15000.0f) * M_PI;
-		// temporary_data[i + 0] = sin(rad);
-		// temporary_data[i + 1] = cos(rad);
-		// temporary_data[i + 2] = -1.0;
+		float rad = (i / 6.0f) * M_PI;
+		temporary_data[i + 0] = sin(rad) * 0.8;
+		temporary_data[i + 1] = cos(rad) * 0.8;
+		temporary_data[i + 2] = -1.0;
 
 		/* full square */
 		// temporary_data[i + 0] = rand() / (float)INT32_MAX;
@@ -54,12 +54,12 @@ void	OpenGL::_init_vbo(void)
 		// temporary_data[i + 2] = -1.0;
 
 		/* sphere */
-		float	latitude, longitude;
-		longitude = (rand() / (float)INT32_MAX) * (float)M_PI * 2;
-		latitude = (rand() / (float)INT32_MAX) * (float)M_PI;
-		temporary_data[i + 0] = sin(longitude) * sin(latitude);
-		temporary_data[i + 1] = cos(longitude) * sin(latitude);
-		temporary_data[i + 2] = cos(latitude);
+		// float	latitude, longitude;
+		// longitude = (rand() / (float)INT32_MAX) * (float)M_PI * 2;
+		// latitude = (rand() / (float)INT32_MAX) * (float)M_PI;
+		// temporary_data[i + 0] = sin(longitude) * sin(latitude);
+		// temporary_data[i + 1] = cos(longitude) * sin(latitude);
+		// temporary_data[i + 2] = cos(latitude);
 	}
 	all.temporary_data = temporary_data;
 
@@ -67,7 +67,7 @@ void	OpenGL::_init_vbo(void)
 	printf("VBO: [%d/1]\t", this->vbo);
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
-	glBufferData(GL_ARRAY_BUFFER, 1000000*3*4, temporary_data,
+	glBufferData(GL_ARRAY_BUFFER, 4*3*4, temporary_data,
 	 	GL_STATIC_DRAW);
 }
 
@@ -76,11 +76,13 @@ void	OpenGL::_init_vbo(void)
 static GLuint compile_shader(const char *filename, GLenum type)
 {
 	GLuint		shader;
+	std::string	scode;
 	const char	*code;
 	GLint		status;
 	char		buffer[512];
 
-	code = Utils::read_file(filename);
+	scode = Utils::read_file(filename);	/* fetch code in stack */
+	code = scode.c_str();
 	shader = glCreateShader(type);
 	glShaderSource(shader, 1, &code, 0);
 
@@ -91,12 +93,12 @@ static GLuint compile_shader(const char *filename, GLenum type)
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	if (status != GL_TRUE)
 	{
-		printf("[%s] shader compilation failed: [%d/1]\n", filename, status);
+		std::cerr << "[" << filename << "] shader compilation failed: [" <<
+		status << "/1]" << std::endl;
 		glGetShaderInfoLog(shader, 512, NULL, buffer);
-		printf("Compilation log:\n%s\n", buffer);
+		std::cerr << "Compilation log:" << std::endl << buffer;
 		exit(0);
 	}
-	free((void *)code);
 	return (shader);
 }
 
@@ -109,7 +111,7 @@ void	OpenGL::_init_shader(void)
 
 	/* create shader program and attach shaders */
 	this->shader.program = glCreateProgram();
-	printf("Program: [%d/3]\n", this->shader.program);
+	std::cout << "Program: [" << this->shader.program << "/3]" << std::endl;
 	glAttachShader(this->shader.program, this->shader.vertex);
 	glAttachShader(this->shader.program, this->shader.fragment);
 	glBindFragDataLocation(this->shader.program, 0, "outColor");
