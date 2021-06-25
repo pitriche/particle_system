@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:14:54 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/24 11:00:19 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/24 13:37:02 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,18 @@ namespace Utils
 		clGetProgramBuildInfo(cl.program_test, cl.device,
 			CL_PROGRAM_BUILD_LOG, 512, buffer, 0);
 		std::cerr << buffer;
+		exit(0);
+	}
+
+	void		openGL_error_log(unsigned int shader, int err_code,
+				const char *filename)
+	{
+		char	buffer[512];
+
+		std::cerr << "[" << filename << "] shader compilation failed: [" <<
+		err_code << "/1]" << std::endl;
+		glGetShaderInfoLog(shader, 512, NULL, buffer);
+		std::cerr << "Compilation log:" << std::endl << buffer;
 		exit(0);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 21:03:42 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/24 11:06:16 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/24 13:42:42 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	Display::update(void)
 
 
 	/* draw particles from VBO and wait for finish */
-	glDrawArrays(GL_POINTS, 0, 4);
+	glDrawArrays(GL_POINTS, 0, PARTICLES);
 	glFinish();
 
 	SDL_GL_SwapWindow(this->window);

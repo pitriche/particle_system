@@ -6,14 +6,12 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 20:59:50 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/23 18:39:55 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/24 13:23:31 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ALL_HPP
 # define ALL_HPP
-
-# define GL_SILENCE_DEPRECATION
 
 # include "Display.hpp"
 # include "Event.hpp"

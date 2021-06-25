@@ -6,7 +6,7 @@
 #    By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/07 14:21:44 by pitriche          #+#    #+#              #
-#    Updated: 2021/06/23 18:41:31 by pitriche         ###   ########.fr        #
+#    Updated: 2021/06/24 13:23:11 by pitriche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,10 @@ main.cpp		\
 CC = clang++
 
 FL_OPTI = -O3 -flto
-FLAGS = -Wall -Wextra -Wconversion -Wunused -std=c++11 $(FL_OPTI)
+FLAGS = -Wall -Wextra -Wconversion -Wunused -std=c++11 $(FL_OPTI) \
+-D 'GL_SILENCE_DEPRECATION='
+# MacOS is a demon spawned low class abomination
+
 CFLAGS = -c $(FLAGS)
 
 SDL_DIR = frameworks

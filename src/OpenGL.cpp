@@ -6,12 +6,10 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:14:54 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/24 11:08:56 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/25 10:45:29 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* MacOS is the worst thing this earth had the disgrace to bear */
-#define GL_SILENCE_DEPRECATION
 
 #include "OpenGL.hpp"
 #include "Defines.hpp"
@@ -31,20 +29,20 @@ void	OpenGL::_init_vao(void)
 {
 	glGenVertexArrays(1, &this->vao);
 	glBindVertexArray(this->vao);
-	printf("VAO: [%d/1]\t", this->vao);
+	std::cout << "VAO: [" << this->vao << "/1]\t";
 }
 
 
 void	OpenGL::_init_vbo(void)
 {
-	static float temporary_data[4*3]; ////////////////
-	for (unsigned i = 0; i < 12; i += 3)
+	static float temporary_data[PARTICLES*3]; ////////////////
+	for (unsigned i = 0; i < PARTICLES*3; i += 3)
 	{
 		/* circle */
-		float rad = (i / 6.0f) * M_PI;
-		temporary_data[i + 0] = sin(rad) * 0.8;
-		temporary_data[i + 1] = cos(rad) * 0.8;
-		temporary_data[i + 2] = -1.0;
+		float rad = (float)M_PI * i / (PARTICLES * 1.5f);
+		temporary_data[i + 0] = sin(rad) * 0.8f;
+		temporary_data[i + 1] = cos(rad) * 0.8f;
+		temporary_data[i + 2] = 0.0f;
 
 		/* full square */
 		// temporary_data[i + 0] = rand() / (float)INT32_MAX;
@@ -64,10 +62,10 @@ void	OpenGL::_init_vbo(void)
 	all.temporary_data = temporary_data;
 
 	glGenBuffers(1, &this->vbo);
-	printf("VBO: [%d/1]\t", this->vbo);
+	std::cout << "VBO: [" << this->vbo << "/1]\t";
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
-	glBufferData(GL_ARRAY_BUFFER, 4*3*4, temporary_data,
+	glBufferData(GL_ARRAY_BUFFER, PARTICLES*3*4, temporary_data,
 	 	GL_STATIC_DRAW);
 }
 
@@ -79,7 +77,6 @@ static GLuint compile_shader(const char *filename, GLenum type)
 	std::string	scode;
 	const char	*code;
 	GLint		status;
-	char		buffer[512];
 
 	scode = Utils::read_file(filename);	/* fetch code in stack */
 	code = scode.c_str();
@@ -92,13 +89,7 @@ static GLuint compile_shader(const char *filename, GLenum type)
 	/* error checking */
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	if (status != GL_TRUE)
-	{
-		std::cerr << "[" << filename << "] shader compilation failed: [" <<
-		status << "/1]" << std::endl;
-		glGetShaderInfoLog(shader, 512, NULL, buffer);
-		std::cerr << "Compilation log:" << std::endl << buffer;
-		exit(0);
-	}
+		Utils::openGL_error_log(shader, status, filename);
 	return (shader);
 }
 
@@ -144,7 +135,7 @@ void	OpenGL::_init_uniform(void)
 
 	this->uniform.reference_length = glGetUniformLocation(this->shader.program,
 		"reference_length");
-	glUniform1f(this->uniform.reference_length, 1.5);
+	glUniform1f(this->uniform.reference_length, 3.0);
 
 	this->uniform.screen_ratio = glGetUniformLocation(this->shader.program,
 		"screen_ratio");
