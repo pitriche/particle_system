@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:14:54 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/24 13:37:02 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/28 11:33:33 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ namespace Utils
 		std::stringstream	ss;
 
 		fs.open(filename);
+		if (!fs.is_open())
+			error_quit("Cannot open source file");
 		ss << fs.rdbuf();
 		return (ss.str());
 	}
@@ -42,7 +44,7 @@ namespace Utils
 			error_quit("Invalid Kernel name !");
 		std::cerr << "Kernel compilation failed [" << err_code << "]" <<
 			std::endl << "Compilation log:" << std::endl;
-		clGetProgramBuildInfo(cl.program_test, cl.device,
+		clGetProgramBuildInfo(cl.program, cl.device,
 			CL_PROGRAM_BUILD_LOG, 512, buffer, 0);
 		std::cerr << buffer;
 		exit(0);

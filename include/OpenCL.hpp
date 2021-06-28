@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:13:45 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/25 16:05:49 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/28 15:13:09 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ struct OpenCL
 
 		cl_program			program;
 		cl_kernel			kernel_update_speed;
+		cl_kernel			kernel_update_position;
 
 		cl_mem				buffer_pos;
 		cl_mem				buffer_speed;

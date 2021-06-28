@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:14:54 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/25 16:08:57 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/28 15:58:50 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,69 +46,67 @@ void	OpenCL::init(void)
 	this->buffer_cursor = clCreateBuffer(this->context, CL_MEM_READ_ONLY,
 		3 * sizeof(float), 0, 0);	/* maybe not a buffer */
 
-	float	pos_data[] = { ////////////////////////////////
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-		1.0f, 1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		-1.0f, 1.0f, -1.0f,
-		-1.0f, -1.0f, 1.0f,
-		-1.0f, -1.0f, -1.0f
-	};
-	float	speed_data[] = { ////////////////////////////////
-		0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f,
-	};
+
+	float	speed_data[PARTICLES * 3];
+	bzero(speed_data, PARTICLES *3*4);
 
 	float	cursor_data[3] = { ////////////////////////////////
-		1.2f, 0.0f, 0.0f,
+		1.0f, 1.0f, 1.0f,
 	};
 
-	/* write in buffers */
-	clEnqueueWriteBuffer(this->queue, this->buffer_pos, CL_FALSE, 0,
-		PARTICLES * 3 * sizeof(float), (void *)pos_data, 0, 0, 0);
+	/* create program and get kernels */
+	ssource = Utils::read_file("kernel/particle.cl");
+	source = ssource.c_str();
+	this->program = clCreateProgramWithSource(this->context, 1, &source, 0,
+		0);
+	clBuildProgram(this->program, 0, 0, 0, 0, 0);
+	this->kernel_update_speed = clCreateKernel(this->program,
+		"update_speed", &err_code);
+	this->kernel_update_position = clCreateKernel(this->program,
+		"update_position", &err_code);
+	if (err_code != 0)
+		Utils::openCL_error_log(*this, err_code);
+
+	/* set kernel args */
+	clSetKernelArg(this->kernel_update_speed, 0, sizeof(cl_mem), &this->buffer_pos);
+	clSetKernelArg(this->kernel_update_speed, 1, sizeof(cl_mem), &this->buffer_speed);
+	clSetKernelArg(this->kernel_update_speed, 2, sizeof(cl_mem), &this->buffer_cursor);
+	clSetKernelArg(this->kernel_update_position, 0, sizeof(cl_mem), &this->buffer_pos);
+	clSetKernelArg(this->kernel_update_position, 1, sizeof(cl_mem), &this->buffer_speed);
+
+
+
+	// /* write in buffers */
+	// clEnqueueWriteBuffer(this->queue, this->buffer_pos, CL_FALSE, 0,
+	// 	PARTICLES * 3 * sizeof(float), (void *)pos_data, 0, 0, 0);
 	clEnqueueWriteBuffer(this->queue, this->buffer_speed, CL_FALSE, 0,
 		PARTICLES * 3 * sizeof(float), (void *)speed_data, 0, 0, 0);
 	clEnqueueWriteBuffer(this->queue, this->buffer_cursor, CL_TRUE, 0,
 		3 * sizeof(float), (void *)cursor_data, 0, 0, 0);
 
-
-
-	/* create program and get kernels */
-	ssource = Utils::read_file("kernel/test.cl");
-	source = ssource.c_str();
-	this->program_test = clCreateProgramWithSource(this->context, 1, &source, 0,
-		0);
-	clBuildProgram(this->program_test, 0, 0, 0, 0, 0);
-	this->kernel_test = clCreateKernel(this->program_test, "test_add",
-		&err_code);
-	if (err_code != 0)
-		Utils::openCL_error_log(*this, err_code);
-	/* set kernel args and enqueue operations */
+	// /* enqueue kernel operations */
 	size_t	global_size[2] = {PARTICLES * 3, 0};
-	clSetKernelArg(this->kernel_test, 0, sizeof(cl_mem), &this->buffer);
-	clSetKernelArg(this->kernel_test, 1, sizeof(cl_mem), &buf2);
-	clEnqueueNDRangeKernel(this->queue, this->kernel_test, 1, 0, global_size, 0,
-		0, 0, 0);
+	// clEnqueueNDRangeKernel(this->queue, this->kernel_update_speed, 1, 0,
+	// 	global_size, 0, 0, 0, 0);
+	// clEnqueueNDRangeKernel(this->queue, this->kernel_update_position, 1, 0,
+	// 	global_size, 0, 0, 0, 0);
 
-	/* enqueue read buffer */
-	clEnqueueReadBuffer(this->queue, this->buffer, CL_TRUE, 0,
-		PARTICLES * 3 * sizeof(float), (void *)temporary_data, 0, 0, 0);
+	// /* retrive data */
+	// clEnqueueReadBuffer(this->queue, this->buffer_speed, CL_TRUE, 0,
+	// 	PARTICLES * 3 * sizeof(float), (void *)speed_data, 0, 0, 0);
+	// clEnqueueReadBuffer(this->queue, this->buffer_pos, CL_TRUE, 0,
+	// 	PARTICLES * 3 * sizeof(float), (void *)pos_data, 0, 0, 0);
 
-	/* Wait for finish - sync with GPU */
+	// /* Wait for finish - sync with GPU */
 	clFinish(this->queue);
 
 
-	pront(temporary_data);
-	std::cout << std::endl;
-	pront(temporary_data2);
 
-	exit(0); ////////////
+
+
+	// pront(pos_data);
+	std::cout << std::endl;
+	// pront(speed_data);
+
+	// exit(0); ////////////
 }

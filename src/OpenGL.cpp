@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:14:54 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/25 10:45:29 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/28 16:09:49 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,37 +35,35 @@ void	OpenGL::_init_vao(void)
 
 void	OpenGL::_init_vbo(void)
 {
-	static float temporary_data[PARTICLES*3]; ////////////////
 	for (unsigned i = 0; i < PARTICLES*3; i += 3)
 	{
 		/* circle */
 		float rad = (float)M_PI * i / (PARTICLES * 1.5f);
-		temporary_data[i + 0] = sin(rad) * 0.8f;
-		temporary_data[i + 1] = cos(rad) * 0.8f;
-		temporary_data[i + 2] = 0.0f;
+		all.temporary_data[i + 0] = sin(rad) * 0.8f;
+		all.temporary_data[i + 1] = cos(rad) * 0.8f;
+		all.temporary_data[i + 2] = 0.0f;
 
 		/* full square */
-		// temporary_data[i + 0] = rand() / (float)INT32_MAX;
-		// temporary_data[i + 1] = rand() / (float)INT32_MAX;
-		// temporary_data[i + 0] = temporary_data[i + 0] * 2 - 1.0f;
-		// temporary_data[i + 1] = temporary_data[i + 1] * 2 - 1.0f;
-		// temporary_data[i + 2] = -1.0;
+		// all.temporary_data[i + 0] = rand() / (float)INT32_MAX;
+		// all.temporary_data[i + 1] = rand() / (float)INT32_MAX;
+		// all.temporary_data[i + 0] = all.temporary_data[i + 0] * 2 - 1.0f;
+		// all.temporary_data[i + 1] = all.temporary_data[i + 1] * 2 - 1.0f;
+		// all.temporary_data[i + 2] = -1.0;
 
 		/* sphere */
 		// float	latitude, longitude;
 		// longitude = (rand() / (float)INT32_MAX) * (float)M_PI * 2;
 		// latitude = (rand() / (float)INT32_MAX) * (float)M_PI;
-		// temporary_data[i + 0] = sin(longitude) * sin(latitude);
-		// temporary_data[i + 1] = cos(longitude) * sin(latitude);
-		// temporary_data[i + 2] = cos(latitude);
+		// all.temporary_data[i + 0] = sin(longitude) * sin(latitude);
+		// all.temporary_data[i + 1] = cos(longitude) * sin(latitude);
+		// all.temporary_data[i + 2] = cos(latitude);
 	}
-	all.temporary_data = temporary_data;
 
 	glGenBuffers(1, &this->vbo);
 	std::cout << "VBO: [" << this->vbo << "/1]\t";
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
-	glBufferData(GL_ARRAY_BUFFER, PARTICLES*3*4, temporary_data,
+	glBufferData(GL_ARRAY_BUFFER, PARTICLES*3*4, all.temporary_data,
 	 	GL_STATIC_DRAW);
 }
 
@@ -135,7 +133,7 @@ void	OpenGL::_init_uniform(void)
 
 	this->uniform.reference_length = glGetUniformLocation(this->shader.program,
 		"reference_length");
-	glUniform1f(this->uniform.reference_length, 3.0);
+	glUniform1f(this->uniform.reference_length, 1.0);
 
 	this->uniform.screen_ratio = glGetUniformLocation(this->shader.program,
 		"screen_ratio");

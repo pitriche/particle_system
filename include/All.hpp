@@ -6,13 +6,14 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 20:59:50 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/24 13:23:31 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/28 15:31:54 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ALL_HPP
 # define ALL_HPP
 
+# include "Defines.hpp"
 # include "Display.hpp"
 # include "Event.hpp"
 # include "Time.hpp"
@@ -28,7 +29,8 @@ struct All
 		OpenGL	gl;
 		OpenCL	cl;
 
-		float *temporary_data; ////////////////////
+		float temporary_data[PARTICLES * 3]; ////////////////////
+		float temporary_cursor[3]; ////////////////////
 
 		All(void);
 		virtual ~All(void);

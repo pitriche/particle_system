@@ -17,6 +17,7 @@ void	main()
 	
 	/* floor brightness */
 	dist += 0.1;
+	// dist += 1.1;
 
 	outColor = vec4(particle_color * dist, 1.0);
 	// outColor = vec4(0.1, 1.0, 0.1, 1.0);
