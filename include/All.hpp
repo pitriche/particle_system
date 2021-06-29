@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 20:59:50 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/28 15:31:54 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/29 14:13:03 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ struct All
 		OpenGL	gl;
 		OpenCL	cl;
 
-		float temporary_data[PARTICLES * 3]; ////////////////////
+		float *temporary_data; ////////////////////
 		float temporary_cursor[3]; ////////////////////
 
 		All(void);

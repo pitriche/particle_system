@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 09:29:13 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/28 15:53:14 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/06/29 18:04:09 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ All	all;
 static void	loop(void)
 {
 	/* update particles */
-	clEnqueueWriteBuffer(all.cl.queue, all.cl.buffer_pos, CL_FALSE, 0,
-		PARTICLES * 3 * sizeof(float), (void *)all.temporary_data, 0, 0, 0);
+	// clEnqueueWriteBuffer(all.cl.queue, all.cl.buffer_pos, CL_FALSE, 0,
+	// 	PARTICLES * 3 * sizeof(float), (void *)all.temporary_data, 0, 0, 0);
 
 
 	int mousex, mousey;
@@ -35,10 +35,12 @@ static void	loop(void)
 
 
 	/* enqueue kernel operations */
-	size_t	global_size[2] = {PARTICLES * 3, 0};
-	clEnqueueNDRangeKernel(all.cl.queue, all.cl.kernel_update_speed, 1, 0,
+	size_t	global_size[2] = {PARTICLES, 0};
+	clEnqueueNDRangeKernel(all.cl.queue, all.cl.kernel.update_speed, 1, 0,
 		global_size, 0, 0, 0, 0);
-	clEnqueueNDRangeKernel(all.cl.queue, all.cl.kernel_update_position, 1, 0,
+
+	global_size[0] = PARTICLES * 3;
+	clEnqueueNDRangeKernel(all.cl.queue, all.cl.kernel.update_position, 1, 0,
 		global_size, 0, 0, 0, 0);
 
 	/* retrive data */
@@ -74,7 +76,14 @@ static void	loop(void)
 
 int			main(void)
 {
+	all.temporary_data = new float[PARTICLES * 3];
 	all.init();
+
+	size_t	global_size[2] = {PARTICLES, 0};
+	clEnqueueNDRangeKernel(all.cl.queue, all.cl.kernel.init_cube_full, 1, 0,
+		global_size, 0, 0, 0, 0);
+	clFinish(all.cl.queue);
+
 	while (1)
 		loop();
 	return (0);
