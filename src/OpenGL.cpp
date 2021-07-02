@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:14:54 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/29 16:24:26 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/02 17:50:05 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "OpenGL.hpp"
 #include "Defines.hpp"
 #include "Utils.hpp"
-#include "All.hpp" // ///////////////////////////////////////////////////////////
 
 OpenGL::OpenGL(void) : window(0), glcontext(0), vao(0), vbo(0) { }
 
@@ -32,39 +31,17 @@ void	OpenGL::_init_vao(void)
 	std::cout << "VAO: [" << this->vao << "/1]\t";
 }
 
-
 void	OpenGL::_init_vbo(void)
 {
-	// for (unsigned i = 0; i < PARTICLES*3; i += 3)
-	// {
-	// 	/* circle */
-	// 	// float rad = (float)M_PI * i / (PARTICLES * 1.5f);
-	// 	// all.temporary_data[i + 0] = sin(rad) * 0.8f;
-	// 	// all.temporary_data[i + 1] = cos(rad) * 0.8f;
-	// 	// all.temporary_data[i + 2] = 0.0f;
-
-	// 	/* full square */
-	// 	// all.temporary_data[i + 0] = rand() / (float)INT32_MAX;
-	// 	// all.temporary_data[i + 1] = rand() / (float)INT32_MAX;
-	// 	// all.temporary_data[i + 0] = all.temporary_data[i + 0] * 2 - 1.0f;
-	// 	// all.temporary_data[i + 1] = all.temporary_data[i + 1] * 2 - 1.0f;
-	// 	// all.temporary_data[i + 2] = -1.0;
-
-	// 	/* sphere */
-	// 	float	latitude, longitude;
-	// 	longitude = (rand() / (float)INT32_MAX) * (float)M_PI * 2;
-	// 	latitude = (rand() / (float)INT32_MAX) * (float)M_PI;
-	// 	all.temporary_data[i + 0] = sin(longitude) * sin(latitude);
-	// 	all.temporary_data[i + 1] = cos(longitude) * sin(latitude);
-	// 	all.temporary_data[i + 2] = cos(latitude);
-	// }
-
 	glGenBuffers(1, &this->vbo);
 	std::cout << "VBO: [" << this->vbo << "/1]\t";
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
-	// glBufferData(GL_ARRAY_BUFFER, PARTICLES*3*4, all.temporary_data,
-	//  	GL_STATIC_DRAW);
+
+	// cl_mem	buffer_pos;
+	// std::cout << "\nbefore " << this->vbo << "\n";
+	// buffer_pos = (cl_mem)gcl_gl_create_ptr_from_buffer(this->vbo);
+	// std::cout << "after " << buffer_pos << "\n";
 }
 
 /* ########################################################################## */
@@ -125,15 +102,14 @@ void	OpenGL::_init_uniform(void)
 {
 	this->uniform.particle_color = glGetUniformLocation(this->shader.program,
 		"particle_color");
-	glUniform3f(this->uniform.particle_color, 1.0f, 0.4f, 0.2f);
+	glUniform3f(this->uniform.particle_color, 1.0f, 1.0f, 1.0f);
 
 	this->uniform.cursor_position = glGetUniformLocation(this->shader.program,
 		"cursor_position");
-	// glUniform3f(this->uniform.cursor_position, 0.0, 1.0, -1.0);
 
 	this->uniform.reference_length = glGetUniformLocation(this->shader.program,
 		"reference_length");
-	glUniform1f(this->uniform.reference_length, 2.2f);
+	glUniform1f(this->uniform.reference_length, 1.0f);
 
 	this->uniform.screen_ratio = glGetUniformLocation(this->shader.program,
 		"screen_ratio");

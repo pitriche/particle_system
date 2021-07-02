@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:13:45 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/29 16:15:40 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/02 17:32:12 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,16 @@
 
 # include <OpenCL/cl.h>
 
+# include <OpenCL/opencl.h>	/* gcl_gl_set_sharegroup */
+# include <OpenGL/OpenGL.h>	/* CGLGetCurrentContext */
+
 struct Kernel
 {
 	cl_kernel	update_speed;		/* range : each particle */
 	cl_kernel	update_position;	/* range : each float */
 
 	cl_kernel	init_sphere;		/* range : each particle */
+	cl_kernel	init_disk;			/* range : each particle */
 	cl_kernel	init_cube_full;		/* range : each particle */
 	cl_kernel	init_cube;			/* range : each particle */
 };
@@ -41,9 +45,10 @@ struct OpenCL
 		cl_mem				buffer_speed;
 		cl_mem				buffer_cursor;
 
-		// float				tempo;
+		CGLContextObj		cgl_context;
+		CGLShareGroupObj	sharegroup;
 
-		void	init(void);
+		void	init(GLuint vbo);
 
 	private:
 };

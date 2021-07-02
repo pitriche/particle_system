@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 21:03:42 by pitriche          #+#    #+#             */
-/*   Updated: 2021/04/01 09:26:03 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/02 17:50:26 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,28 +19,57 @@ Event::~Event(void) { }
 
 void	Event::_keychange(SDL_Keycode kc)
 {
+	size_t	global_size[2] = {PARTICLES, 0};
+
 	switch (kc)
 	{
-		case (SDLK_w):
-			std::cout << "W pressed" << std::endl;
+		case (SDLK_1):
+			clEnqueueNDRangeKernel(all.cl.queue, all.cl.kernel.init_sphere, 1,
+				0, global_size, 0, 0, 0, 0);
+			clFinish(all.cl.queue);
 			break;
-		case (SDLK_a):
-			std::cout << "A pressed" << std::endl;
+		case (SDLK_2):
+			clEnqueueNDRangeKernel(all.cl.queue, all.cl.kernel.init_disk, 1, 0,
+				global_size, 0, 0, 0, 0);
+			clFinish(all.cl.queue);
 			break;
-		case (SDLK_s):
-			std::cout << "S pressed" << std::endl;
+		case (SDLK_3):
+			clEnqueueNDRangeKernel(all.cl.queue, all.cl.kernel.init_cube_full,
+				1, 0, global_size, 0, 0, 0, 0);
+			clFinish(all.cl.queue);
 			break;
-		case (SDLK_d):
-			std::cout << "D pressed" << std::endl;
+		case (SDLK_4):
+			clEnqueueNDRangeKernel(all.cl.queue, all.cl.kernel.init_cube, 1, 0,
+				global_size, 0, 0, 0, 0);
+			clFinish(all.cl.queue);
 			break;
-		case (SDLK_t):
-			std::cout << "T pressed" << std::endl;
+		case (SDLK_PAGEUP):
+			all.reference_length += 0.1f;
+			glUniform1f(all.gl.uniform.reference_length, all.reference_length);
+			break;
+		case (SDLK_PAGEDOWN):
+			all.reference_length -= 0.1f;
+			all.reference_length = all.reference_length > 0.01f ?
+			all.reference_length : 0.01f;
+			glUniform1f(all.gl.uniform.reference_length, all.reference_length);
+			break;
+		case (SDLK_r):
+			glUniform3f(all.gl.uniform.particle_color, 1.0f, 0.2f, 0.2f);
+			break;
+		case (SDLK_g):
+			glUniform3f(all.gl.uniform.particle_color, 0.4f, 1.0f, 0.2f);
+			break;
+		case (SDLK_b):
+			glUniform3f(all.gl.uniform.particle_color, 0.2f, 0.4f, 1.0f);
+			break;
+		case (SDLK_p):
+			glUniform3f(all.gl.uniform.particle_color, 0.99f, 0.73f, 0.70f);
+			break;
+		case (SDLK_y):
+			glUniform3f(all.gl.uniform.particle_color, 1.00f, 0.74f, 0.05f);
 			break;
 		case (SDLK_ESCAPE):
 			exit(0);
-			break;
-		default:
-			std::cout << "other pressed" << std::endl;
 			break;
 	}
 }

@@ -44,7 +44,7 @@ __kernel void	update_speed(__global vec3 *position, __global vec3 *speed,
 	add_vec3(speed + id, &acceleration);
 
 	/* fixed value speed damping */
-	float damping = 1.0;
+	float damping = 0.99995;
 	speed[id].x *= damping;
 	speed[id].y *= damping;
 	speed[id].z *= damping;
@@ -68,7 +68,7 @@ float	rand_ish(int n)
 	ulong	seed;
 
 	seed = (n * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1);
-	return ((float)(int)(seed >> 16) / 2147483647.0f);
+	return ((float)(uint)(seed >> 16) / 4294967296.0);
 }
 
 __kernel void	init_sphere(__global vec3 *position, __global vec3 *speed)
@@ -88,14 +88,31 @@ __kernel void	init_sphere(__global vec3 *position, __global vec3 *speed)
 	speed[id].z = 0.0f;
 }
 
+__kernel void	init_disk(__global vec3 *position, __global vec3 *speed)
+{
+	int		id;
+	float	latitude;
+	float	longitude;
+	
+	id = get_global_id(0);
+	longitude = rand_ish(((id * 124322) >> 3) ^ id) * (float)M_PI * 2;
+	latitude = rand_ish(((id * 12345) >> 2) ^ id) * (float)M_PI;
+	position[id].x = sin(longitude) * sin(latitude);
+	position[id].y = cos(longitude) * sin(latitude);
+	position[id].z = 1;
+	speed[id].x = 0.0f;
+	speed[id].y = 0.0f;
+	speed[id].z = 0.0f;
+}
+
 __kernel void	init_cube_full(__global vec3 *position, __global vec3 *speed)
 {
 	int		id;
 	
 	id = get_global_id(0);
-	position[id].x = rand_ish(((id * 124322) >> 3) ^ id) * 2.0 - 1.0;
-	position[id].y = rand_ish(((id * 124567) >> 3) ^ id) * 2.0 - 1.0;
-	position[id].z = rand_ish(((id * 223562) >> 3) ^ id) * 2.0 - 1.0;
+	position[id].x = rand_ish(((id * 124322) >> 3) ^ id) * 1.8 - 0.9;
+	position[id].y = rand_ish(((id * 124567) >> 3) ^ id) * 1.8 - 0.9;
+	position[id].z = rand_ish(((id * 223562) >> 3) ^ id) * 1.8 - 0.9;
 	speed[id].x = 0.0f;
 	speed[id].y = 0.0f;
 	speed[id].z = 0.0f;
@@ -108,26 +125,25 @@ __kernel void	init_cube(__global vec3 *position, __global vec3 *speed)
 	float	fixed_side;
 
 	id = get_global_id(0);
-	side = (int)(sin(id * 1000000.0f) * 3000) % 3;
-	fixed_side = (int)(sin(id * 1212121.2f) * 3000) % 2;
-	fixed_side = fixed_side ? 1 : -1;
-
+	side = (int)(rand_ish(((id * 1234) >> 3) ^ id) * 345542) % 3;
+	fixed_side = (int)(rand_ish(((id * 23421) >> 3) ^ id) * 6312746) % 2;
+	fixed_side = (fixed_side ? -0.9 : 0.9);
 	switch (side)
 	{
 		case 0 :
-			position[id].x = sin(id * 1234567.8f) * 2.0 - 1.0;
-			position[id].y = sin(id * 8765432.1f) * 2.0 - 1.0;
+			position[id].x = rand_ish(((id * 1234) >> 3) ^ id) * 1.8 - 0.9;
+			position[id].y = rand_ish(((id * 4321) >> 3) ^ id) * 1.8 - 0.9;
 			position[id].z = fixed_side;
 			break;
 		case 1 :
-			position[id].x = sin(id * 1234567.8f) * 2.0 - 1.0;
+			position[id].x = rand_ish(((id * 1234) >> 3) ^ id) * 1.8 - 0.9;
 			position[id].y = fixed_side;
-			position[id].z = sin(id * 8765432.1f) * 2.0 - 1.0;
+			position[id].z = rand_ish(((id * 4321) >> 3) ^ id) * 1.8 - 0.9;
 			break;
 		case 2 :
 			position[id].x = fixed_side;
-			position[id].y = sin(id * 1234567.8f) * 2.0 - 1.0;
-			position[id].z = sin(id * 8765432.1f) * 2.0 - 1.0;
+			position[id].y = rand_ish(((id * 1234) >> 3) ^ id) * 1.8 - 0.9;
+			position[id].z = rand_ish(((id * 4321) >> 3) ^ id) * 1.8 - 0.9;
 			break;
 	}
 	speed[id].x = 0.0f;

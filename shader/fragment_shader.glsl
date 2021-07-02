@@ -13,12 +13,11 @@ void	main()
 	float dist;
 	
 	dist = length(particle_position_geometry - cursor_position);
+	// dist = reference_length / exp(dist);
 	dist = reference_length / dist;
 	
 	/* floor brightness */
-	dist -= 1.0;
-	// dist += 1.1;
+	dist -= 0.6;
 
 	outColor = vec4(particle_color * dist, 1.0);
-	// outColor = vec4(0.1, 1.0, 0.1, 1.0);
 }
