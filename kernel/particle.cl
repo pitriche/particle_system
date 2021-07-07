@@ -5,6 +5,12 @@ typedef struct	s_vec3
 	float	z;
 }				vec3;
 
+typedef struct	s_data
+{
+	float	mass;
+	float	cursor[3];
+}				data;
+
 /* ########################################################################## */
 
 /* vector addition */
@@ -20,7 +26,7 @@ void	add_vec3(__global vec3 *result, float3 *vec)
 /* ########################################################################## */
 
 __kernel void	update_speed(__global vec3 *position, __global vec3 *speed,
-	__global vec3 *cursor)
+	__global data *data)
 {
 	int		id;
 	float3	pos_vec;
@@ -29,8 +35,8 @@ __kernel void	update_speed(__global vec3 *position, __global vec3 *speed,
 
 	id = get_global_id(0);
 
-	pos_vec = (float3)(position[id].x, position[id].y, position[id].z);\
-	acceleration = (float3)(cursor->x, cursor->y, cursor->z);
+	pos_vec = (float3)(position[id].x, position[id].y, position[id].z);
+	acceleration = (float3)(data->cursor[0], data->cursor[1], data->cursor[2]);
 
 	/* compute particle weight (time=1) */
 	acceleration -= pos_vec;
@@ -39,6 +45,7 @@ __kernel void	update_speed(__global vec3 *position, __global vec3 *speed,
 		acceleration = (float3)(0);
 	else
 		acceleration /= distance * exp(distance);
+	acceleration *= data->mass;
 
 	/* apply acceleration (particle mass = 1) */
 	add_vec3(speed + id, &acceleration);

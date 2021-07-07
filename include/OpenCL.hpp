@@ -6,17 +6,21 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:13:45 by pitriche          #+#    #+#             */
-/*   Updated: 2021/07/02 17:32:12 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/07 15:12:37 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OPENCL_HPP
 # define OPENCL_HPP
 
-# include <OpenCL/cl.h>
-
-# include <OpenCL/opencl.h>	/* gcl_gl_set_sharegroup */
+# include <OpenCL/cl.h>		/* cl_* */
 # include <OpenGL/OpenGL.h>	/* CGLGetCurrentContext */
+
+struct cl_data
+{
+	float	mass;
+	float	cursor[3];
+};
 
 struct Kernel
 {
@@ -43,7 +47,7 @@ struct OpenCL
 
 		cl_mem				buffer_pos;
 		cl_mem				buffer_speed;
-		cl_mem				buffer_cursor;
+		cl_mem				buffer_data;
 
 		CGLContextObj		cgl_context;
 		CGLShareGroupObj	sharegroup;

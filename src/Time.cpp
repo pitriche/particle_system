@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 21:03:42 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/23 16:55:37 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/07 13:46:30 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,15 @@ std::string	Time::time_to_frame(void)
 
 std::string	Time::fps_average(void)
 {
-	unsigned	tot = 0;
-
+	unsigned	tot;
+	float		result;
+	
+	tot = 0;
 	for (unsigned i = 0; i < this->_sample_average; i++)
 		tot += this->_delta_sample[i];
 	tot /= this->_sample_average;
-	return ("Average: " + std::to_string(1000000000.0 / tot) + " Hz");
+	result = 1000000000.0f / tot;
+	return ("Average: " + std::to_string(result) + " Hz");
 }
 
 void		Time::set_average_sample(unsigned nb)

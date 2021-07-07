@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:14:54 by pitriche          #+#    #+#             */
-/*   Updated: 2021/07/02 17:50:05 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/07 13:49:58 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,8 @@ void	OpenGL::_init_vao(void)
 void	OpenGL::_init_vbo(void)
 {
 	glGenBuffers(1, &this->vbo);
-	std::cout << "VBO: [" << this->vbo << "/1]\t";
-
 	glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
-
-	// cl_mem	buffer_pos;
-	// std::cout << "\nbefore " << this->vbo << "\n";
-	// buffer_pos = (cl_mem)gcl_gl_create_ptr_from_buffer(this->vbo);
-	// std::cout << "after " << buffer_pos << "\n";
+	std::cout << "VBO: [" << this->vbo << "/1]\t";
 }
 
 /* ########################################################################## */
@@ -53,15 +47,14 @@ static GLuint compile_shader(const char *filename, GLenum type)
 	const char	*code;
 	GLint		status;
 
-	scode = Utils::read_file(filename);	/* fetch code in stack */
+	/* fetch code in stack */
+	scode = Utils::read_file(filename);
 	code = scode.c_str();
 	shader = glCreateShader(type);
 	glShaderSource(shader, 1, &code, 0);
 
-	/* compiling */
+	/* compile and check for errors */
 	glCompileShader(shader);
-	
-	/* error checking */
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	if (status != GL_TRUE)
 		Utils::openGL_error_log(shader, status, filename);
@@ -122,7 +115,6 @@ void	OpenGL::init(SDL_Window *window)
 {
 	/* create OpenGL context */
 	this->glcontext = SDL_GL_CreateContext(window);
-
 	printf("Supported OpenGL version: %s\nUsing OpenGL %d.%d\n\n",
 		glGetString(GL_VERSION), OPENGL_VERSION_MAJOR, OPENGL_VERSION_MINOR);
 
@@ -131,7 +123,5 @@ void	OpenGL::init(SDL_Window *window)
 	this->_init_shader();
 	this->_init_attribute();
 	this->_init_uniform();
-
-	glEnable(GL_DEPTH_TEST); // maybe
-
+	glEnable(GL_DEPTH_TEST);
 }

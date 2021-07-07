@@ -6,15 +6,17 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:14:54 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/28 11:33:33 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/07 13:56:21 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Utils.hpp"
-#include <iostream>	/* cerr, string */
-#include <fstream>	/* ifstream */
-#include <sstream>	/* ifstream */
-#include <cstdlib>	/* exit */
+#include <iostream>		/* cerr, string */
+#include <fstream>		/* ifstream */
+#include <sstream>		/* stringstream */
+#include <cstdlib>		/* exit */
+#include "OpenGL.hpp"	/* glGetShaderInfoLog */
+
 
 namespace Utils
 {

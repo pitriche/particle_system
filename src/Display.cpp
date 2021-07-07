@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 21:03:42 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/29 14:44:47 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/07 13:36:47 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	Display::init(void)
 		exit(0);
 
 	/* This is out of place, i have no way around */
-	/* init OpenGL context, version 4.1 (adapt version to OS supported) */
 	if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
 		SDL_GL_CONTEXT_PROFILE_CORE) < 0 ||
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,
@@ -46,30 +45,9 @@ void	Display::init(void)
 
 void	Display::update(void)
 {
-	int mousex;
-	int mousey;
-
-	/* clear screen */
+	/* clear screen and depth buffer */
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	/* set mouse location for fragment shader */
-	SDL_GetMouseState(&mousex, &mousey);
-	glUniform3f(all.gl.uniform.cursor_position,
-		(mousex * 2 - WIN_SIZEX) / (float)WIN_SIZEY,
-		(WIN_SIZEY - mousey * 2) / (float)WIN_SIZEY, 0.0);
-
-
-	/* e x p a n d */
-	// for (unsigned i = 0; i < 3000000; i += 3)
-	// {
-	// 	all.temporary_data[i + 0] *= 1.001f;
-	// 	all.temporary_data[i + 2] *= 1.001f;
-	// }
-	// glBufferData(GL_ARRAY_BUFFER, 1000000*3*4, all.temporary_data,
-	//  	GL_STATIC_DRAW);
-
-
 
 	/* draw particles from VBO and wait for finish */
 	glDrawArrays(GL_POINTS, 0, PARTICLES);

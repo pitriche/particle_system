@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 13:52:16 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/29 14:19:43 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/07 13:51:52 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define WIN_POSX	100
 # define WIN_POSY	50
 
-# define BASE_FPS	0	/* buggy */
-# define PARTICLES	1000000
+# define BASE_FPS	0	/* 0 for unlimited */
+# define PARTICLES	3000000
 
 #endif

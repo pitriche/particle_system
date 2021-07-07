@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 21:03:42 by pitriche          #+#    #+#             */
-/*   Updated: 2021/07/02 17:50:26 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/07 15:26:00 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ Event::~Event(void) { }
 
 void	Event::_keychange(SDL_Keycode kc)
 {
-	size_t	global_size[2] = {PARTICLES, 0};
-
+	size_t	global_size[2];
+	
+	global_size[0] = PARTICLES;
+	global_size[1] = 0;
 	switch (kc)
 	{
 		case (SDLK_1):
@@ -49,8 +51,8 @@ void	Event::_keychange(SDL_Keycode kc)
 			break;
 		case (SDLK_PAGEDOWN):
 			all.reference_length -= 0.1f;
-			all.reference_length = all.reference_length > 0.01f ?
-			all.reference_length : 0.01f;
+			if (all.reference_length <= 0)
+				all.reference_length = 0.01f;
 			glUniform1f(all.gl.uniform.reference_length, all.reference_length);
 			break;
 		case (SDLK_r):
@@ -68,6 +70,18 @@ void	Event::_keychange(SDL_Keycode kc)
 		case (SDLK_y):
 			glUniform3f(all.gl.uniform.particle_color, 1.00f, 0.74f, 0.05f);
 			break;
+		case (SDLK_KP_PLUS):
+			all.data.mass += 0.25f;
+			break;
+		case (SDLK_KP_MINUS):
+			all.data.mass -= 0.25f;
+			break;
+		case (SDLK_KP_0):
+			all.data.mass = 0;
+			break;
+		case (SDLK_KP_1):
+			all.data.mass = 1;
+			break;
 		case (SDLK_ESCAPE):
 			exit(0);
 			break;
@@ -82,9 +96,10 @@ void	Event::update(void)
 	{
 		if (event.type == SDL_QUIT)
 			exit(0);
-		// if (event.type == SDL_KEYDOWN && !event.key.repeat)
 		if (event.type == SDL_KEYDOWN)
 			this->_keychange(event.key.keysym.sym);
+		if (event.type == SDL_MOUSEBUTTONDOWN)
+			all.cursor_update = !all.cursor_update;
 	}
 }
 

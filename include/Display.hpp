@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 18:57:00 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/23 11:00:25 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/07 13:52:07 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ struct Display
 		Display(void);
 		virtual ~Display(void);
 
-		SDL_Window		*window;
+		SDL_Window	*window;
 
 		unsigned	res_x;
 		unsigned	res_y;
 
-		void	init(void);
-		void	update(void);
+		void		init(void);
+		void		update(void);
 
 	protected:
 	private:

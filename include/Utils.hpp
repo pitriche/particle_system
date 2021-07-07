@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:13:45 by pitriche          #+#    #+#             */
-/*   Updated: 2021/06/24 13:24:37 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/07 13:55:57 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <iostream>	/* std::string */
 # include "OpenCL.hpp"
-# include "OpenGL.hpp"
 
 namespace Utils
 {

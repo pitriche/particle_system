@@ -6,7 +6,7 @@
 #    By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/07 14:21:44 by pitriche          #+#    #+#              #
-#    Updated: 2021/06/29 15:18:54 by pitriche         ###   ########.fr        #
+#    Updated: 2021/07/07 15:12:03 by pitriche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,6 @@ CLASSES_HEADERS= $(addsuffix .hpp, $(CLASSES))
 CLASSES_SRCS= $(addsuffix .cpp, $(CLASSES))
 
 HEADERS = $(CLASSES_HEADERS) \
-Vec3d.hpp	\
 Defines.hpp	\
 
 SRC_FILES = $(CLASSES_SRCS)	\
