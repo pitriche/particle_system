@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 21:03:42 by pitriche          #+#    #+#             */
-/*   Updated: 2021/07/07 15:22:48 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/07 15:58:24 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	All::init(void)
 	
 	all.reference_length = 1.0;
 	all.cursor_update = true;
+	all.data.mass = 1;
 	this->disp.init();
 	this->gl.init(this->disp.window);
 	this->cl.init(this->gl.vbo);

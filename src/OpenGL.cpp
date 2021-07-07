@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 11:14:54 by pitriche          #+#    #+#             */
-/*   Updated: 2021/07/07 13:49:58 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/07 15:59:48 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	OpenGL::_init_uniform(void)
 {
 	this->uniform.particle_color = glGetUniformLocation(this->shader.program,
 		"particle_color");
-	glUniform3f(this->uniform.particle_color, 1.0f, 1.0f, 1.0f);
+	glUniform3f(this->uniform.particle_color, 0.85f, 0.85f, 1.0f);
 
 	this->uniform.cursor_position = glGetUniformLocation(this->shader.program,
 		"cursor_position");

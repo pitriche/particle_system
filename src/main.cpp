@@ -6,7 +6,7 @@
 /*   By: pitriche <pitriche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 09:29:13 by pitriche          #+#    #+#             */
-/*   Updated: 2021/07/07 15:28:16 by pitriche         ###   ########.fr       */
+/*   Updated: 2021/07/07 15:57:49 by pitriche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ static void	set_cursor(void)
 		(mousex * 2 - WIN_SIZEX) / (float)WIN_SIZEY,
 		(WIN_SIZEY - mousey * 2) / (float)WIN_SIZEY, 0.0);
 }
-
-
 
 static void	loop(void)
 {
@@ -72,9 +70,12 @@ int			main(void)
 	if ((unsigned long)PARTICLES > 25000000)
 		Utils::error_quit("Nope");
 	all.init();
-		set_cursor();
-
-	clFinish(all.cl.queue);
+	set_cursor();
+	std::cout << std::endl << "mouse button : CoM freeze/unfreeze" << std::endl;
+	std::cout << "numpad + -   : mass setting" << std::endl;
+	std::cout << "numpad 0 1   : mass to 0 or 1" << std::endl;
+	std::cout << "Pu Pd        : light radius setting" << std::endl;
+	std::cout << "R G B Y P    : particle colors" << std::endl;
 	while (1)
 		loop();
 	return (0);
